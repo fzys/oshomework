@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>os操作系统</title>
+	<link href="css/bootstrap.min.css" rel="stylesheet"/>
+	<link href="css/style.css" rel="stylesheet"/>
+	<script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+	  </head>
+<!--   <h1>操作系统上机实验</h1>
+  <h3>杜维杰    20142965   信1401-2</h3> -->
+<body>
+<div class="select">
+  <h4 id="title">欢迎使用本网页，请选择您要进行验证的算法</h4>
+  <ul>
+  	<li>进程调度模拟算法</li>
+  	<li>存储管理动态分区分配及回收算法</li>
+  </ul>
+  </div>
+  <div class="li1">
+	<div class = "information" id="inf">
+		<h4>请填写相应信息：</h4>
+		<div>
+		<label for="">进程名： </label>
+		<input type="text"  id = "name" placeholder="请输入一个进程名">
+		</div><span id="yanzheng"></span>
+		<div >
+		<label for="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NEEDTIME： </label>
+		<input type="text" id = "needtime" placeholder="请输入进程完成需要时间">（时间片）
+		</div>
+		<span id="yanzhengtime"></span>
+		<div >
+		<a href="#h5"><button  id="btn1" class="btn btn-primary" disabled = "disabled">录入进程</button></a>
+		<input id="btn2" type="reset" class=" btn btn-warning" value="重置"/>
+
+		<h5 id="h5">👌&nbsp;录入成功!请点击下方方块选择算法</h5>
+		</div>
+	</div>
+	<div class="caozuo" id = "one">
+		<h2 >实验一 进程调度模拟算法</h2>
+		<a href="#one"><div class="OS" id="youxian" data-brief= "优先数调度算法程序" title="点击执行此算法"></div></a>
+		<a href="#one"><div class="OS" id="lunzhuan" data-brief= "循环轮转调度算法程序" title="点击执行此算法"></div></a>
+	</div>
+	<div class = "caozuo display program"  id = "yxxs">
+		<h2>优先数调度算法程序</h2>
+	</div>
+	<div class = "caozuo display program"  id = "lzxs">
+		<h2>循环轮转调度算法程序</h2>
+		</div>
+		</div>
+	<div class="li2">
+	<div class="caozuo" id="two">
+		<h2>实验二 存储管理动态分区分配及回收算法</h2>
+		<div class="OS" id="kongxian" data-brief= "空闲区回收算法" title="点击执行此算法"></div></div>
+		<div class = "caozuo display program"  id = "kxhs">
+		<h2>空闲区回收算法程序</h2>
+	<!-- 	<div class="OS" id="lunzhuan" data-brief= "循环轮转调度算法程序"></div> -->
+	</div>
+	</div>
+	<a href="#" title="点我返回顶部" id="backtop"><span>🚀</span>
+</body>
+<script type="text/javascript">
+		//jq实现基本逻辑
+		$(function(){
+			//封装主菜单选择模块,降低用户使用难度，提升用户体验。
+			function Hideorshow(id1,id2,id3,id4){
+				$(id1).click(function(){
+					$(id2).hide(1000);
+					$(id3).show(1000,function(){
+						$(id4).show(1000);
+					});
+				});
+			};
+			//封装淡入淡出函数
+           function slideToggle(id1,id2){
+            $(id1).click(function(){
+            	$(id2).show(1000);
+            	$(id2).hide(5000);
+            });
+            };
+            //封装隐藏模块
+    		function Hide(id1,id2){
+            $(id1).click(function(){
+            	$(id2).hide(1000);
+            });
+            };
+            //封装显示模块
+            function Show(id1,id2,action){
+            $(id1).click(function(){
+            	$(id2).show(1000);
+            });
+            };
+            //实验一输入验证
+         	$('#name').blur(function(){
+         		var name = $('#name').val();
+         		if(name ==""){
+         			//jq转dom对象并设置按钮为不可操作
+         			$('#btn1')[0].disabled = true;
+         			$('#yanzheng').text("❌  进程名不能为空！");
+         			$('#yanzheng').css({
+         			"color":"red",
+         			"opacity": "0.9"
+         		});
+         		}
+         		else {
+         			//jq转dom对象并设置按钮为不可操作
+         			$('#btn1')[0].disabled = true;
+         			$('#yanzheng').text("✅ 输入正确！");
+         			$('#yanzheng').css({
+         			"color":"green",
+         			"opacity": "1"
+         	});;
+         		};
+         	});
+         	$('#needtime').blur(function(){
+         		var time = $('#needtime').val();
+         		//判断是否是正整数
+         		if(isNaN(time)||time%1!=0||time<=0){
+         		//jq转dom对象并设置按钮为不可操作
+         		$('#btn1')[0].disabled = true;
+         		$('#yanzhengtime').text("❌  时间片数只能是整正数！");
+         		$('#yanzhengtime').css({
+         			"color":"red",
+         			"opacity": "0.9"
+         	});
+         	}
+         		//判断是否为空
+         		else if(time == "") {
+         		//jq转dom对象并设置按钮为不可操作
+         		$('#btn1')[0].disabled = true;
+         		$('#yanzhengtime').text("❌  时间片数不能为空！");
+         		$('#yanzhengtime').css({
+         			"color":"red",
+         			"opacity": "0.9"
+         	});
+         	}
+         		else {
+         		//jq转dom对象并设置按钮为不可操作
+         		$('#btn1')[0].disabled = true;
+         		$('#yanzhengtime').text("✅ 输入正确！");
+         		$('#yanzhengtime').css({
+         			"color":"green",
+         			"opacity": "1"
+         	});
+         	};
+         	//验证数据是否正确（透明度如果都为1则为正确，录入按钮变为可操作，否则不可操作。）
+         		var timeOpacity = $('#yanzhengtime').css("opacity");
+         		var nameOpacity = $('#yanzheng').css("opacity");
+         		if(timeOpacity==nameOpacity==1)
+         		{  console.log("hahah");
+         			//jq转dom对象并设置按钮为可操作
+         			$('#btn1')[0].disabled = false;
+         		}
+         		// if($('#yanzheng').css.)
+         	});
+         	//按钮点击后文本框数据清空
+         	// function Zero(obj){
+         	// 	$(obj).click(function(){
+         	// 	alert("hahah");
+         	// 	$('name').text("");
+         	// 	$('needtime').text("");
+         	// 	});
+         	// }
+         	// Zero('#btn1');
+         	// Zero('#btn2');
+            Hideorshow("li:eq(1)",".li1",".li2","#two");
+            Hideorshow("li:eq(0)",".li2",".li1","#inf");
+         	Show("#btn1","#one");
+         	slideToggle("#btn1","#h5");
+         	Show("#lunzhuan","#lzxs");
+         	Show("#youxian","#yxxs");
+         	Hide("#youxian","#lzxs");
+         	Hide("#lunzhuan","#yxxs");
+         	
+		});
+
+</script>
+</html>
