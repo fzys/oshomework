@@ -38,6 +38,38 @@
                 $('#yanzhengtime').text("");
             });
             //实验一输入验证
+            $('#number').blur(function(){
+                var number = $('#number').val();
+                //判断是否是正整数
+                if(isNaN(number)||number%1!=0||number<=0){
+                //jq转dom对象并设置按钮为不可操作
+                $('#btn1')[0].disabled = true;
+                $('#yanzhengnumber').text("❌  进程数只能是整正数！");
+                $('#yanzhengnumber').css({
+                    "color":"red",
+                    "opacity": "0.9"
+            });
+            }
+                //判断是否为空
+                else if(number == "") {
+                //jq转dom对象并设置按钮为不可操作
+                $('#btn1')[0].disabled = true;
+                $('#yanzhengnumber').text("❌  进程数不能为空！");
+                $('#yanzhengnumber').css({
+                    "color":"red",
+                    "opacity": "0.9"
+            });
+            }
+                else {
+                //jq转dom对象并设置按钮为不可操作
+                $('#btn1')[0].disabled = true;
+                $('#yanzhengnumber').text("✅ 输入正确！");
+                $('#yanzhengnumber').css({
+                    "color":"green",
+                    "opacity": "1"
+            });
+            };        
+        });
          	$('#name').blur(function(){
          		var name = $('#name').val();
          		if(name ==""){
@@ -62,10 +94,10 @@
          	$('#needtime').blur(function(){
          		var time = $('#needtime').val();
          		//判断是否是正整数
-         		if(isNaN(time)||time%1!=0||time<=0){
+         		if(isNaN(time)||time%1!=0||time<=0||time>50){
          		//jq转dom对象并设置按钮为不可操作
          		$('#btn1')[0].disabled = true;
-         		$('#yanzhengtime').text("❌  时间片数只能是整正数！");
+         		$('#yanzhengtime').text("❌  需要时间片数只能是不大于50的整正数！");
          		$('#yanzhengtime').css({
          			"color":"red",
          			"opacity": "0.9"
@@ -93,7 +125,8 @@
          	//验证数据是否正确（透明度如果都为1则为正确，录入按钮变为可操作，否则不可操作。）
          		var timeOpacity = $('#yanzhengtime').css("opacity");
          		var nameOpacity = $('#yanzheng').css("opacity");
-         		if(timeOpacity==nameOpacity==1)
+                var numberOpacity = $('#yanzhengnumber').css("opacity");
+         		if(timeOpacity==nameOpacity==numberOpacity==1)
          		{  //jq转dom对象并设置按钮为可操作
          			$('#btn1')[0].disabled = false;
          		}
@@ -101,29 +134,27 @@
             //调用函数
             Hideorshow("li:eq(1)",".li1",".li2","#two");
             Hideorshow("li:eq(0)",".li2",".li1","#inf");
-         	Show("#btn1","#one");
-         	slideToggle("#btn1","#h5");
          	Show("#lunzhuan","#lzxs");
          	Show("#youxian","#yxxs");
          	Hide("#youxian","#lzxs");
          	Hide("#lunzhuan","#yxxs");
             //初始化数组
-            var data = [{
-            	"name":yxname,
-            	"needtime":yxneedtime,
-            	"cputime":cputime,
-
-            }];
+            var data = []; 
             //优先数算法逻辑实现
                 $("#btn1").click(function(){	
+                   $('#btn1')[0].disabled = true;
+                   var yxnumber = $('#number').val();
                    var yxneedtime = $('#needtime').val();
                    var yxneedtimemodel = $('#needtime').val()
                    var yxname = $('#name').val();
                    var cputime = 0;
+                   $('#number').val("");
                    $('#name').val("");
                    $('#needtime').val("");
 	               $('#yanzheng').text("");
 	               $('#yanzhengtime').text("");
+                   $('#yanzhengnumber').text("");
+                   //定时器
 	               var timer =null;
 	               timer = setInterval(function(){
 	                yxneedtime--;
@@ -136,8 +167,21 @@
 	                	clearInterval(timer);
 	                }
 	               }, 1000);
-		           console.log("优先数需要时间："+yxneedtime); 
-		           console.log("优先数mingzi："+yxname); 
-		           console.log(data[0]);
-                })    ;	
+                   data.push({
+                    "name": yxname,
+                    "yxneedtime":yxneedtime,
+                    "cputime":cputime
+                   });
+                  if(data.length<1){
+                   $('#titleinf').text("请填写第"+(data.length+1)+"个进程信息：");
+                   alert("录入成功，请继续输入第"+(data.length+1)+"个进程信息！");
+                   }
+                   if(data.length=1) {
+                    $('#titleinf').text("请填写您要输入的进程信息：");
+                    $('#h5').show(1000);
+                    $('#h5').hide(3000);
+                    $("#one").show(1000);
+                
+                   }
+                });
 		});
