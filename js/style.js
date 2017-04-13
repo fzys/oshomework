@@ -3,7 +3,6 @@
 		$(function(){
             //初始化数组
             var data = [];
-            var datayx = [];
 			//封装主菜单选择模块,降低用户使用难度，提升用户体验。
 			function Hideorshow(id1,id2,id3,id4){
 				$(id1).click(function(){
@@ -160,7 +159,7 @@
                 var timeOpacity = $('#yanzhengtime').css("opacity");
                 var nameOpacity = $('#yanzheng').css("opacity");
                 var numberOpacity = $('#yanzhengnumber').css("opacity"); 
-                //验证数据是否正确（透明度如果都为1则为正确，录入按钮变为可操作，否则不可操作。）
+                //验证数据是否正确（透明度如果都为0.8则为正确，录入按钮变为可操作，否则不可操作。）
                 if(timeOpacity==0.8&&nameOpacity==0.8&&numberOpacity==0.8)
                 {  //jq转dom对象并设置按钮为可操作
                     $('#btn1')[0].disabled = false;
@@ -170,16 +169,15 @@
             //调用函数
             Hideorshow("li:eq(1)",".li1",".li2","#two");
             Hideorshow("li:eq(0)",".li2",".li1","#inf");
-         	Show("#lunzhuan","#lzxs");
-         	Show("#youxian","#yxxs");
-         	Hide("#youxian","#lzxs");
-         	Hide("#lunzhuan","#yxxs");
-            //优先数算法逻辑实现
+         	// Show("#lunzhuan","#lzxs");
+         	// Show("#youxian","#yxxs");
+         	// Hide("#youxian","#lzxs");
+         	// Hide("#lunzhuan","#yxxs");
+            //录入各进程并排序
                 $("#btn1").click(function(){	
                    $('#btn1')[0].disabled = true;
                    var yxnumber = $('#number').val();
                    var yxneedtime = $('#needtime').val();
-                   // var yxneedtimemodel = $('#needtime').val();
                    var priority =50-yxneedtime;
                    var state = 'R'; 
                    var yxname = $('#name').val();
@@ -192,18 +190,18 @@
 	               $('#yanzhengtime').text("");
                    $('#yanzhengnumber').text("");
                    //定时器
-	               var timer =null;
-	               timer = setInterval(function(){
-	                yxneedtime--;
-	                cputime++;
-	                // console.log(yxname+"执行完还需要的时间:"+yxneedtime);
-	                // console.log(yxname+"累积占用cpu的时间："+cputime);
-	                if(yxneedtime<=0) {
-	                	// console.log("我执行完了");
-	                	// console.log(yxname+"累积占用cpu的时间："+cputime);
-	                	clearInterval(timer);
-	                }
-	               }, 1000);
+	               // var timer =null;
+	               // timer = setInterval(function(){
+	               //  yxneedtime--;
+	               //  cputime++;
+	               //  // console.log(yxname+"执行完还需要的时间:"+yxneedtime);
+	               //  // console.log(yxname+"累积占用cpu的时间："+cputime);
+	               //  if(yxneedtime<=0) {
+	               //  	// console.log("我执行完了");
+	               //  	// console.log(yxname+"累积占用cpu的时间："+cputime);
+	               //  	clearInterval(timer);
+	               //  }
+	               // }, 1000);
                  data.push({
                     "name": yxname,
                     "yxneedtime":yxneedtime,
@@ -212,16 +210,33 @@
                     "state":state
 
                    });
-              for(var i =0;i<data.length;i++){ 
-                  datayx[i]=data[i].priority;
-                  console.log("优先数长度:"+datayx.length);
-                  console.log("第"+(i+1)+"个进程的优先数长度:"+datayx[i]);
-                  // datayx.sort(a,b){
-                  //   return a-b;
-                  // }
-                  console.log(datayx[i]+",");
-                  console.log("第"+(i+1)+"个进程：名称："+data[i].name+",需要时间："+data[i].yxneedtime+",占用时间："+data[i].cputime+",优先数："+data[i].priority+",状态："+state);
-              }
+             //  for(var i =0;i<data.length;i++){ 
+             //      datayx[i]=data[i].priority;
+             //      console.log("优先数长度:"+datayx.length);
+             //      console.log("第"+(i+1)+"个进程的优先数长度:"+datayx[i]);
+             //      // console.log(datayx[i]+",");
+             //      // console.log("第"+(i+1)+"个进程：名称："+data[i].name+",需要时间："+data[i].yxneedtime+",占用时间："+data[i].cputime+",优先数："+data[i].priority+",状态："+state);
+             // }
+              //降序排序
+                data.sort(function(a,b){
+                    return b.priority-a.priority;
+                  });
+               for(var i=0;i<data.length;i++){
+                if(i ==0){
+                    console.log("i'm borther");
+                   data[i].state ="R";
+                }
+                else if(data[i].yxneedtime ==0){
+                    console.log("woshi erge");
+                    data[i].state = "F";
+                }
+                else {
+                    console.log("woshi sandi");
+                    data[i].state = "W";
+                }
+               console.log(data[i].name+"的优先数长度:"+data[i].priority);
+               console.log("第"+(i+1)+"个进程：名称："+data[i].name+",需要时间："+data[i].yxneedtime+",占用时间："+data[i].cputime+",优先数："+data[i].priority+",状态："+data[i].state);
+               }
                   if(data.length<yxnumber){
                    // console.log(data.length);
                    $('#number')[0].parentNode.style.display = 'none';                    
@@ -229,10 +244,29 @@
                    alert("录入成功，请继续输入第"+(data.length+1)+"个进程信息！");
                    }
                    if(data.length==yxnumber) {
+                    $('#number')[0].parentNode.style.display = 'none';    
                     $('#titleinf').text("若要重新录入进程请点击红色按钮，若要追加请直接在下方追加：");
                     $('#h5').show(1000);
                     $('#h5').hide(3000);
                     $("#one").show(1000);
-                   }
+                   };
+               });
+                //优先数算法逻辑实现
+                $("#youxian").click(function(){
+                    $("#lzxs").hide(1000);
+                    $("#yxxs").show(1000,function(){
+                       
+                    });
+                     for(var i =0;i<data.length;i++){
+                        $("#yxxs").prepend('<span></span>');
+                    $("#yxxs span:eq(i)").text(data.length+":第"+(i+1)+"个进程：名称："+data[i].name+",需要时间："+data[i].yxneedtime+",占用时间："+data[i].cputime+",优先数："+data[i].priority+",状态："+data[i].state);
+                 }   
                 });
+                //轮转 算法逻辑实现
+                $("#lunzhuan").click(function(){
+                    $("#yxxs").hide(1000);
+                    $("#lzxs").show(1000);
+                    
+                });
+
 		});
