@@ -128,8 +128,9 @@
 		color: green;
 		display: none;
 	}
-	#btn1,#btn2 {
+	#btn1,#btn2,#btn3 {
 		cursor : pointer;
+		opacity: 0.9;
 	} 	
 	#backtop {
 		text-decoration: none;

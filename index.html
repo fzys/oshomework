@@ -20,7 +20,7 @@
       </div>
     <div class="li1">
     	<div class = "information" id="inf">
-    		<h4 id="titleinf">请填写您要输入的进程信息：</h4>
+    		<h4 id="titleinf">请输入您要录入进程数及第一个进程信息：</h4>
             <div>
             <label for="">进程数： </label>
             <input type="text"  id = "number" placeholder="请您选择要录入进程的数量">
@@ -32,12 +32,14 @@
     		</div><span id="yanzheng"></span>
     		<div >
     		<label for="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NEEDTIME： </label>
-    		<input type="text" id = "needtime" placeholder="请输入进程完成需要时间">（时间片）
+    		<input type="text" id = "needtime" placeholder="请输入进程完成需要时间">
+            <span style="color:#aaa;">（时间片）</span>
     		</div>
     		<span id="yanzhengtime"></span>
     		<div >
     		<a href="#h5"><button  id="btn1" class="btn btn-primary" disabled = "disabled">录入进程</button></a>
-    		<button  id="btn2" class="btn btn-warning">重置</button>
+            <button  id="btn2" class="btn btn-warning">重置</button>
+    		<button  id="btn3" class="btn btn-danger">重新输入全部进程</button>
     		<h5 id="h5">👌&nbsp;全部录入成功！请点击下方方块选择调度算法</h5>
     		</div>
     	</div>
@@ -53,6 +55,7 @@
     		<h2>循环轮转调度算法程序</h2>
     		</div>
     		</div>
+            </div>
     	<div class="li2">
     	<div class="caozuo" id="two">
     		<h2>实验二 存储管理动态分区分配及回收算法</h2>
