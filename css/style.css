@@ -59,7 +59,7 @@
 	.caozuo .OS:after {
 		content: attr(data-brief);
 		display: block;
-		width: 100%; 
+		width: 100%;
 		height: 100%;
 		text-align: center;
 		line-height: 210px;
@@ -106,18 +106,18 @@
 		cursor: pointer;
 	}
 	.select ul li:nth-child(1) {
-		background-color: rgba(51,125,200,1); 
-	
+		background-color: rgba(51,125,200,1);
+
 	}
 	.select ul li:nth-child(1):hover{
 		background:rgba(155,55,55,.8) ;
 		color:white;
-	}		
+	}
 	.select ul li:nth-child(2) {
 		background: rgba(160,79,169,.8) ;
 	}
 	.select ul li:nth-child(2):hover{
-		background: rgba(155,55,55,.8); 
+		background: rgba(155,55,55,.8);
 		color:white;
 	}
 	.information {
@@ -131,11 +131,14 @@
 	#btn1,#btn2,#btn3 {
 		cursor : pointer;
 		opacity: 0.9;
-	} 	
+	}
 	#backtop {
 		text-decoration: none;
 		font: 40px/40px "kaiti";
 		position: fixed;
 		right: 0;
 		bottom: 0
+	}
+	#yssf,#lzsf {
+		white-space: pre;
 	}

@@ -3,6 +3,8 @@
 		$(function(){
             //初始化数组
             var data = [];
+            var dataFished = [];
+            var dataNotChanged=[];
 			//封装主菜单选择模块,降低用户使用难度，提升用户体验。
 			function Hideorshow(id1,id2,id3,id4){
 				$(id1).click(function(){
@@ -44,14 +46,18 @@
             //重置全部进程权限判定
             $("#btn3").click(function(){
                 if(confirm("确定要重置全部进程？")){
-                 $('#number')[0].parentNode.style.display = 'block';
+                //点击是的时候刷新页面，暂时不能写。
+                $('#number')[0].parentNode.style.display = 'block';
                 $('#name').val("");
                 $('#needtime').val("");
                 $('#number').val("");
                 $('#yanzheng').text("");
                 $('#yanzhengnumber').text("");
                 $('#yanzhengtime').text("");
-                 data =[]; 
+                $("#yxsf").empty();
+                $("#lzsf").empty();
+                data =[];
+                dataFished = [];
                 }
             });
             //验证进程数是否符合要求
@@ -91,8 +97,8 @@
              if(timeOpacity==0.8&&nameOpacity==0.8&&numberOpacity==0.8)
             {  //jq转dom对象并设置按钮为可操作
                     $('#btn1')[0].disabled = false;
-                };   
-            };      
+                };
+            };
         });
             //验证进程名是否符合要求
          	$('#name').blur(function(){
@@ -114,15 +120,15 @@
          			"color":"green",
          			"opacity": "0.8"
          	});;
-         	};  
+         	};
                 var timeOpacity = $('#yanzhengtime').css("opacity");
                 var nameOpacity = $('#yanzheng').css("opacity");
-                var numberOpacity = $('#yanzhengnumber').css("opacity"); 
-                //验证数据是否正确（透明度如果都为1则为正确，录入按钮变为可操作，否则不可操作。）
+                var numberOpacity = $('#yanzhengnumber').css("opacity");
+                //验证数据是否正确（透明度如果都为0.8则为正确，录入按钮变为可操作，否则不可操作。）
                 if(timeOpacity==0.8&&nameOpacity==0.8&&numberOpacity==0.8)
                 {  //jq转dom对象并设置按钮为可操作
                     $('#btn1')[0].disabled = false;
-                }  
+                }
          	});
             // 验证进程需要时间是否符合要求
          	$('#needtime').blur(function(){
@@ -158,14 +164,13 @@
          	};
                 var timeOpacity = $('#yanzhengtime').css("opacity");
                 var nameOpacity = $('#yanzheng').css("opacity");
-                var numberOpacity = $('#yanzhengnumber').css("opacity"); 
+                var numberOpacity = $('#yanzhengnumber').css("opacity");
                 //验证数据是否正确（透明度如果都为0.8则为正确，录入按钮变为可操作，否则不可操作。）
                 if(timeOpacity==0.8&&nameOpacity==0.8&&numberOpacity==0.8)
                 {  //jq转dom对象并设置按钮为可操作
                     $('#btn1')[0].disabled = false;
-                }   
+                }
          	});
-
             //调用函数
             Hideorshow("li:eq(1)",".li1",".li2","#two");
             Hideorshow("li:eq(0)",".li2",".li1","#inf");
@@ -174,12 +179,13 @@
          	// Hide("#youxian","#lzxs");
          	// Hide("#lunzhuan","#yxxs");
             //录入各进程并排序
-                $("#btn1").click(function(){	
+                $("#btn1").click(function(){
                    $('#btn1')[0].disabled = true;
                    var yxnumber = $('#number').val();
+                   console.log("yxnumber:"+yxnumber);
                    var yxneedtime = $('#needtime').val();
                    var priority =50-yxneedtime;
-                   var state = 'R'; 
+                   var state = 'R';
                    var yxname = $('#name').val();
                    var cputime = 0;
                    $('#name').val("");
@@ -189,19 +195,6 @@
 	               $('#yanzheng').text("");
 	               $('#yanzhengtime').text("");
                    $('#yanzhengnumber').text("");
-                   //定时器
-	               // var timer =null;
-	               // timer = setInterval(function(){
-	               //  yxneedtime--;
-	               //  cputime++;
-	               //  // console.log(yxname+"执行完还需要的时间:"+yxneedtime);
-	               //  // console.log(yxname+"累积占用cpu的时间："+cputime);
-	               //  if(yxneedtime<=0) {
-	               //  	// console.log("我执行完了");
-	               //  	// console.log(yxname+"累积占用cpu的时间："+cputime);
-	               //  	clearInterval(timer);
-	               //  }
-	               // }, 1000);
                  data.push({
                     "name": yxname,
                     "yxneedtime":yxneedtime,
@@ -210,41 +203,37 @@
                     "state":state
 
                    });
-             //  for(var i =0;i<data.length;i++){ 
-             //      datayx[i]=data[i].priority;
-             //      console.log("优先数长度:"+datayx.length);
-             //      console.log("第"+(i+1)+"个进程的优先数长度:"+datayx[i]);
-             //      // console.log(datayx[i]+",");
-             //      // console.log("第"+(i+1)+"个进程：名称："+data[i].name+",需要时间："+data[i].yxneedtime+",占用时间："+data[i].cputime+",优先数："+data[i].priority+",状态："+state);
-             // }
-              //降序排序
-                data.sort(function(a,b){
-                    return b.priority-a.priority;
-                  });
-               for(var i=0;i<data.length;i++){
-                if(i ==0){
-                    console.log("i'm borther");
-                   data[i].state ="R";
-                }
-                else if(data[i].yxneedtime ==0){
-                    console.log("woshi erge");
-                    data[i].state = "F";
-                }
-                else {
-                    console.log("woshi sandi");
-                    data[i].state = "W";
-                }
-               console.log(data[i].name+"的优先数长度:"+data[i].priority);
-               console.log("第"+(i+1)+"个进程：名称："+data[i].name+",需要时间："+data[i].yxneedtime+",占用时间："+data[i].cputime+",优先数："+data[i].priority+",状态："+data[i].state);
-               }
+                 console.log("datalength:"+data.length);
+              // //降序排序
+              //   data.sort(function(a,b){
+              //       return b.priority-a.priority;
+              //     });
+              //  for(var i=0;i<data.length;i++){
+              //   if(i ==0){
+              //       // console.log("i'm borther");
+              //      data[i].state ="R";
+              //   }
+              //   else if(data[i].yxneedtime ==0){
+              //       // console.log("woshi erge");
+              //       data[i].state = "F";
+              //   }
+              //   else {
+              //       // console.log("woshi sandi");
+              //       data[i].state = "W";
+              //   }
+               // console.log(data[i].name+"的优先数长度:"+data[i].priority);
+               // console.log("第"+(i+1)+"个进程：名称："+data[i].name+",需要时间："+data[i].yxneedtime+",占用时间："+data[i].cputime+",优先数："+data[i].priority+",状态："+data[i].state);
+               // }
                   if(data.length<yxnumber){
                    // console.log(data.length);
-                   $('#number')[0].parentNode.style.display = 'none';                    
+                   $('#number')[0].parentNode.style.display = 'none';
                    $('#titleinf').text("请填写第"+(data.length+1)+"个进程信息：");
                    alert("录入成功，请继续输入第"+(data.length+1)+"个进程信息！");
                    }
                    if(data.length==yxnumber) {
-                    $('#number')[0].parentNode.style.display = 'none';    
+                    yxnumber=$('#number').val("1");
+                    console.log(yxnumber);
+                    $('#number')[0].parentNode.style.display = 'none';
                     $('#titleinf').text("若要重新录入进程请点击红色按钮，若要追加请直接在下方追加：");
                     $('#h5').show(1000);
                     $('#h5').hide(3000);
@@ -253,20 +242,116 @@
                });
                 //优先数算法逻辑实现
                 $("#youxian").click(function(){
+                    clearInterval(timer);
                     $("#lzxs").hide(1000);
-                    $("#yxxs").show(1000,function(){
-                       
-                    });
-                     for(var i =0;i<data.length;i++){
-                        $("#yxxs").prepend('<span></span>');
-                    $("#yxxs span:eq(i)").text(data.length+":第"+(i+1)+"个进程：名称："+data[i].name+",需要时间："+data[i].yxneedtime+",占用时间："+data[i].cputime+",优先数："+data[i].priority+",状态："+data[i].state);
-                 }   
+                    $("#yxxs").show(1000);
+                    // $('#yxsf').empty();
+                    var timer = null;
+                    timer = setInterval(function(){
+                    //降序排序
+                    data.sort(function(a,b){
+                            return b.priority-a.priority;
+                          });
+                       for(var i=0;i<data.length;i++){
+                        if(i ==0){
+                        console.log("i'm borther");
+                        data[i].state ="R";
+                        //  if(data[i].yxneedtime ==0){
+                        //     console.log("woshi erge");
+                        //     data[i].state = "F";
+                            
+                        // }
+                        }     
+                        else {
+                            console.log("woshi sandi");
+                            data[i].state = "W";
+                        }
+                    }
+                    for(var i =0;i<data.length;i++){
+                        if(i==0){
+                        $("#yxsf").append('<span>🏃 名称：'+data[i].name+",需要时间："+data[i].yxneedtime+",占用时间："+data[i].cputime+",优先数："+data[i].priority+",状态："+data[i].state+'</span><br/>');
+                            data[0].yxneedtime--;
+                            data[0].priority--;
+                            data[0].cputime++;
+                            if(data[0].yxneedtime<=0){   
+                                data[0].state='F';
+                                dataFished.push(data[0]);
+                                for(var i = 0;i<dataFished.length;i++){
+                                $("#yxsf").append('<span>🚥 第'+(i+1)+"个完成进程名称："+dataFished[i].name+",需要时间："+dataFished[i].yxneedtime+",占用时间："+dataFished[i].cputime+",优先数："+dataFished[i].priority+",状态："+dataFished[i].state+'</span><br/>');
+                            }
+                                data.shift();
+                                // console.log(data[0]);
+                                // console.log("我执行完了");
+                                // clearInterval(timer);
+                    }                  
+                       }
+                       else {
+                        $("#yxsf").append('<span>🐂  第'+i+"个就绪进程名称："+data[i].name+",需要时间："+data[i].yxneedtime+",占用时间："+data[i].cputime+",优先数："+data[i].priority+",状态："+data[i].state+'</span><br/>');
+                    }
+                    };
+
+                    // for(var i =0;i<data.length;i++) {
+                    //     if(data[i].yxneedtime<=0) {
+                    //         clearInterval(timer);
+                    //     }
+                    // }
+                    },1);
                 });
-                //轮转 算法逻辑实现
+                //轮转算法逻辑实现
                 $("#lunzhuan").click(function(){
+                    clearInterval(timer);
                     $("#yxxs").hide(1000);
                     $("#lzxs").show(1000);
-                    
-                });
+                    // $('#yxsf').empty();
+                    var timer = null;
+                    timer = setInterval(function(){
+                    //降序排序
+                    // data.sort(function(a,b){
+                    //         return b.priority-a.priority;
+                    //       });
+                       for(var i=0;i<data.length;i++){
+                        if(i ==0){
+                        console.log("i'm borther");
+                        data[i].state ="R";
+                        //  if(data[i].yxneedtime ==0){
+                        //     console.log("woshi erge");
+                        //     data[i].state = "F";
+                            
+                        // }
+                        }     
+                        else {
+                            console.log("woshi sandi");
+                            data[i].state = "W";
+                        }
+                    }
+                    for(var i =0;i<data.length;i++){
+                        if(i==0){
+                        $("#lzsf").append('<span>🏃 名称：'+data[i].name+",需要时间："+data[i].yxneedtime+",占用时间："+data[i].cputime+",状态："+data[i].state+'</span><br/>');
+                            data[0].yxneedtime=data[0].yxneedtime-2;
+                            data[0].cputime=data[0].cputime+2;
+                            if(data[0].yxneedtime<=0){   
+                                data[0].state='F';
+                                dataFished.push(data[0]);
+                                for(var i = 0;i<dataFished.length;i++){
+                                $("#lzsf").append('<span>🚥 第'+(i+1)+"个完成进程名称："+dataFished[i].name+",需要时间："+dataFished[i].yxneedtime+",占用时间："+dataFished[i].cputime+",优先数："+dataFished[i].priority+",状态："+dataFished[i].state+'</span><br/>');
+                            }
+                                data.shift();
+                                // console.log(data[0]);
+                                // console.log("我执行完了");
+                                // clearInterval(timer);
+                    }                  
+                       }
+                       else {
+                        $("#lzsf").append('<span>🐂  第'+i+"个就绪进程名称："+data[i].name+",需要时间："+data[i].yxneedtime+",占用时间："+data[i].cputime+",优先数："+data[i].priority+",状态："+data[i].state+'</span><br/>');
+                    }
+                    };
 
-		});
+                    // for(var i =0;i<data.length;i++) {
+                    //     if(data[i].yxneedtime<=0) {
+                    //         clearInterval(timer);
+                    //     }
+                    // }
+                    },1);
+                }); 
+            // }
+		  });
