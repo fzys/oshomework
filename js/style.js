@@ -267,7 +267,7 @@
                                 data[0].state='F';
                                 dataFished.push(data[0]);
                                 for(var i = 0;i<dataFished.length;i++){
-                                $("#yxsf").append('<span>🚥 第'+(i+1)+"个完成进程名称："+dataFished[i].name+",需要时间："+dataFished[i].yxneedtime+",占用时间："+dataFished[i].cputime+",优先数："+dataFished[i].priority+",状态："+dataFished[i].state+'</span><br/>');       
+                                $("#yxsf").append('<span>🚥 第'+(i+1)+"个完成进程名称："+dataFished[i].name+",需要时间："+dataFished[i].yxneedtime+",占用时间："+dataFished[i].cputime+",优先数："+dataFished[i].priority+",状态："+dataFished[i].state+'</span><br/>');
                         }
                             data.shift();
                         }
@@ -299,37 +299,43 @@
                     }
                     timer = setInterval(function(){
                     //降序排序
-                    data.sort(function(a,b){
-                            return b.priority-a.priority;
-                          });
-                       for(var i=0;i<data.length;i++){
+                    // data.sort(function(a,b){
+                    //         return b.priority-a.priority;
+                    //       });
+                    for(var i=0;i<data.length;i++){
                         if(i == 0){
-                        console.log("i'm borther");
-                        data[i].state ="R";
-                        $("#yxsf").append('<span>🏃 名称：'+data[i].name+",需要时间："+data[i].yxneedtime+",占用时间："+data[i].cputime+",优先数："+data[i].priority+",状态："+data[i].state+'</span><br/>');
-                            if(data[0].yxneedtime<=0){
-                                data[0].state='F';
-                                dataFished.push(data[0]);
-                                for(var i = 0;i<dataFished.length;i++){
-                                $("#yxsf").append('<span>🚥 第'+(i+1)+"个完成进程名称："+dataFished[i].name+",需要时间："+dataFished[i].yxneedtime+",占用时间："+dataFished[i].cputime+",优先数："+dataFished[i].priority+",状态："+dataFished[i].state+'</span><br/>');
+                              console.log("i'm borther");
+                              data[i].state ="R";
+                              $("#lzxs").append('<span>🏃 名称：'+data[i].name+",需要时间："+data[i].yxneedtime+",占用时间："+data[i].cputime+",状态："+data[i].state+'</span><br/>');
+                              if(data[0].yxneedtime<=0){
+                                    data[0].state='F';
+                                    dataFished.push(data[0]);
+                                    for(var i = 0;i<dataFished.length;i++){
+                                    $("#lzxs").append('<span>🚥 第'+(i+1)+"个完成进程名称："+dataFished[i].name+",需要时间："+dataFished[i].yxneedtime+",占用时间："+dataFished[i].cputime+",状态："+dataFished[i].state+'</span><br/>');
+                                    }
+                             data.shift();
                             }
-                                data.shift();
-                    }
-                    else {
-                        data[0].yxneedtime--;
-                        data[0].priority--;
-                        data[0].cputime++;
-                    }
+                                else {
+                                    data[0].yxneedtime >= 2 ? data[0].yxneedtime -= 2 : data[0].yxneedtime = 0;
+                                    data[0].cputime+=2;
+                                    if(data.length>1){ 
+                                    console.log("datatime:"+data[0].yxneedtime);
+                                    data[0].state= "W";
+                                    data.push(data[0]);
+                                    $("#lzxs").append('<span>🐂  第'+(i+1)+"个就绪进程名称："+data[i+1].name+",需要时间："+data[i+1].yxneedtime+",占用时间："+data[i+1].cputime+",状态："+data[i+1].state+'</span><br/>');
+                                    data.shift();
+                                }
+                                }
                         }
                         else {
-                           
+                            if(i<data.length-1){
                             console.log("woshi sandi");
                             data[i].state = "W";
-                            $("#yxsf").append('<span>🐂  第'+i+"个就绪进程名称："+data[i].name+",需要时间："+data[i].yxneedtime+",占用时间："+data[i].cputime+",优先数："+data[i].priority+",状态："+data[i].state+'</span><br/>');
+                           $("#lzxs").append('<span>🐂  第'+(i+1)+"个就绪进程名称："+data[i].name+",需要时间："+data[i].yxneedtime+",占用时间："+data[i].cputime+",状态："+data[i].state+'</span><br/>');
+                        }
                         }
                     }
                     },0);
                 }
                 });
-            // }
 		  });
